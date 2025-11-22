@@ -1,3 +1,5 @@
-{ pkgs, lib }:
+{ pkgs, pkgs-base, lib }:
 
-lib.mapAttrs (name: value: pkgs.callPackage value {}) (builtins.fromJSON (builtins.readFile ./pkgs.json))
+lib.mapAttrs (name: value: 
+  pkgs-base.callPackage (./. + "/${lib.removePrefix "./" value}") { }
+) (builtins.fromJSON (builtins.readFile ./pkgs.json))
